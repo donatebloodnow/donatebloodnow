@@ -42,21 +42,57 @@
 
 <body>
   <header class="vw-100">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger w-100">
+    <nav
+      class="navbar navbar-expand-md navbar-dark fixed-top bg-danger w-100"
+    >
       <div class="container-fluid">
-        <a class="navbar-brand"
-          href="./"
-          style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;font-weight: bold;">B.D.M.S
-          <i class="fa-solid fa-droplet"></i></a>
+        <a
+          class="navbar-brand"
+          href="#home"
+          on:click={(e) => smoothScroll("#home", e)}
+          style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;font-weight: bold;"
+          >B.D.M.S <i class="fa-solid fa-droplet"></i></a
+        >
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mb-2 mb-md-0 ">
+          <ul class="navbar-nav mb-2 mb-md-0">
             <li class="nav-item active">
-              <a class="nav-link nav-hover text-light" href="../">Home</a>
+              <a
+                class="nav-link nav-hover text-light"
+                href="#home"
+                on:click={(e) => smoothScroll("#home", e)}>Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link nav-hover text-light"
+                href="#news-panel"
+                on:click={(e) => smoothScroll("#news-panel", e)}>News</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-hover text-light" href="./newsletter"
+                >Newsletter</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link nav-hover text-light"
+                href="#bank-locator"
+                on:click={(e) => smoothScroll("#bank-locator", e)}
+                >Blood Bank Locator</a
+              >
             </li>
           </ul>
         </div>

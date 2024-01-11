@@ -41,6 +41,45 @@
   function handleClick(link) {
     window.open(link, "_blank");
   }
+
+  //appointment thingy
+  
+  let showAppointmentScheduler = false;
+
+  onMount(() => {
+    // You can add logic here to determine when to show the appointment scheduler
+  });
+
+  const toggleAppointmentScheduler = () => {
+    showAppointmentScheduler = !showAppointmentScheduler;
+  };
+
+    // New appointment section variables
+    let selectedHospital = ''; // Selected hospital from the dropdown
+  let hospitalList = ['Sample Hospital 1', 'Sample Hospital 2', 'Sample Hospital 3']; // Sample hospital list
+  let hospitalAddresses = [
+    '123 Main St, Cityville, Country',
+    '456 Oak Ave, Townsville, Country',
+    '789 Pine Blvd, Villagetown, Country'
+  ]; // Sample hospital addresses
+  let hospitalContacts = ['123-456-7890', '234-567-8901', '345-678-9012']; // Sample hospital contact numbers
+
+  const handleHospitalChange = (event) => {
+    selectedHospital = event.target.value;
+  };
+
+  const displayHospitalInfo = () => {
+    const selectedIndex = hospitalList.indexOf(selectedHospital);
+    if (selectedIndex !== -1) {
+      const hospitalAddress = hospitalAddresses[selectedIndex];
+      const hospitalContact = hospitalContacts[selectedIndex];
+      // Display the information in the read-only text boxes
+      // You can use these values wherever needed in your UI
+      console.log('Hospital Address:', hospitalAddress);
+      console.log('Hospital Contact:', hospitalContact);
+    }
+  };
+
 </script>
 
 <html lang="en">
@@ -251,17 +290,11 @@
 
   <body class="bg-light">
     <header class="vw-100">
-      <nav
-        class="navbar navbar-expand-md navbar-dark fixed-top bg-danger w-100"
-      >
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger w-100">
         <div class="container-fluid">
-          <a
-            class="navbar-brand"
-            href="#home"
-            on:click={(e) => smoothScroll("#home", e)}
-            style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;font-weight: bold;"
-            >B.D.M.S <i class="fa-solid fa-droplet"></i></a
-          >
+          <a class="navbar-brand" href="#home" on:click={(e) => smoothScroll("#home", e)}>
+            B.D.M.S <i class="fa-solid fa-droplet"></i>
+          </a>
 
           <button
             class="navbar-toggler"
@@ -277,31 +310,30 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mb-2 mb-md-0">
               <li class="nav-item active">
-                <a
-                  class="nav-link nav-hover text-light"
-                  href="#home"
-                  on:click={(e) => smoothScroll("#home", e)}>Home</a
-                >
+                <a class="nav-link nav-hover text-light" href="#home" on:click={(e) => smoothScroll("#home", e)}>
+                  Home
+                </a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link nav-hover text-light"
-                  href="#news-panel"
-                  on:click={(e) => smoothScroll("#news-panel", e)}>News</a
-                >
+                <a class="nav-link nav-hover text-light" href="#news-panel" on:click={(e) => smoothScroll("#news-panel", e)}>
+                  News
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link nav-hover text-light" href="./newsletter"
-                  >Newsletter</a
-                >
+                <a class="nav-link nav-hover text-light" href="./newsletter">
+                  Newsletter
+                </a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link nav-hover text-light"
-                  href="#bank-locator"
-                  on:click={(e) => smoothScroll("#bank-locator", e)}
-                  >Blood Bank Locator</a
-                >
+                <a class="nav-link nav-hover text-light" href="#bank-locator" on:click={(e) => smoothScroll("#bank-locator", e)}>
+                  Blood Bank Locator
+                </a>
+              </li>
+              <!-- Add a new page link for the appointment scheduler -->
+              <li class="nav-item">
+                <a class="nav-link nav-hover text-light" href="./appointment_main">
+                  Appointment Scheduler
+                </a>
               </li>
             </ul>
           </div>
