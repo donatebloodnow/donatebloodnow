@@ -7,6 +7,7 @@
   import { scrollTo } from "$lib/smoothPan.js";
   import Saos from 'saos';
   import Moment from 'moment';
+  import supabase from "$lib/supabaseClient.js";
 
   //Styling Rizz
   const smoothScroll = (target, event) => {
@@ -80,6 +81,121 @@
     }
   };
 
+  //Sort Filter
+  let sortColumn = "";
+  let sortDirection = 1; // 1 for ascending, -1 for descending
+
+  const sortTable = (column) => {
+    if (column === sortColumn) {
+      // Reverse the sort direction if the same column is clicked
+      sortDirection = -sortDirection;
+    } else {
+      // Set the new sort column and reset the direction
+      sortColumn = column;
+      sortDirection = 1;
+    }
+
+    data = data.slice().sort((a, b) => {
+      const valueA = a[column];
+      const valueB = b[column];
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return sortDirection * valueA.localeCompare(valueB);
+      } else {
+        return sortDirection * (valueA - valueB);
+      }
+    });
+  };
+
+
+  //Donor History
+  let data = [];
+  let notification = null;
+  let originalData = [];
+  let searchTerm = '';
+
+  onMount(async () => {
+    const { data: records, error } = await supabase
+      .from("donors_table")
+      .select("*")
+
+    if (error) {
+      console.error("Error fetching data from Supabase:", error);
+    } else {
+      // data = records;
+      originalData = records;
+    }
+  });
+
+  const search = () => {
+    if (searchTerm.trim() === '') {
+      data = [];
+      return;
+    }
+
+    const filteredData = originalData.filter(item => {
+      return (
+        item.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.last_name.toLowerCase().includes(searchTerm.toLowerCase())
+        // Add more fields as needed for your search
+      );
+    });
+
+    data = filteredData;
+  };
+
+  $: search();
+
+  let firstName = "", lastName = "", donorBirth = "", donorSex = "", donorBlood = "", donorStatus = "", donorEmail = "", donorType = "", donorVolume = "", donorNum = "", donorPulse = "", donorBP = "", donationEvent = "";
+
+  const handleSubmit = async () => {
+  // Validate the form data (replace this with your validation logic)
+  if (!firstName || !lastName || !donorBirth || !donorSex || !donorBlood || !donorStatus || !donorEmail || !donorType || !donorVolume || !donorNum || !donorPulse || !donorBP) {
+    setNotification({ type: "error", message: "Please fill in all fields." });
+    return;
+  }
+
+  const formattedContactNum = `+63${donorNum}`;
+
+  try {
+    // Submit the form data to Supabase
+    const { data, error } = await supabase.from("donors_table").upsert([
+      {
+        first_name: firstName,
+        last_name: lastName,
+        birthdate: donorBirth,
+        sex: donorSex,
+        blood_type: donorBlood,
+        civil_status: donorStatus,
+        contact_num: formattedContactNum,
+        blood_pressure: donorBP,
+        email:donorEmail,
+        donation_type: donorType,
+        donation_volume: donorVolume,
+        donor_pulse: donorPulse,
+        donation_event: donationEvent,
+        donation_date: new Date(),
+      },
+    ]);
+    console.log("info:", firstName, lastName, donorBP, donorBirth, donorBlood, donorEmail, donorNum, donorPulse, donorSex, donorStatus, donorType, donorVolume);
+
+    if (error) {
+      console.error("Error submitting data:", error);
+      setNotification({ type: "error", message: "Error submitting data." });
+    } else {
+      console.log("Data submitted successfully:", data);
+      setNotification({ type: "success", message: "Entry submitted successfully." });
+
+      // Optionally, you can reload the page or fetch updated data here
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    }
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    setNotification({ type: "error", message: "Error submitting data." });
+  }
+};
 </script>
 
 <html lang="en">
@@ -450,6 +566,78 @@
           </div>
         </div>
         <!-- /END THE BLOOD BANK LOCATOR -->
+      </div>
+
+      <!--Donor History-->
+      <div class="container marketing hidden" id="donor-history">
+        <div class="card mb-3 mx-5" id="blood-inventory">
+          <div class="card-header text-light bg-danger">
+            <i class="fa fa-droplet" /> Donation History
+          </div>
+          <div class="card-body">
+            <div>
+              <input type="text" class="rounded bg-light mb-2" bind:value={searchTerm} on:input={search} placeholder="Search..." />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr class="clearfix">
+                    <th on:click={() => sortTable('last_name')}>
+                      Donor Name
+                      {sortColumn === 'last_name' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th on:click={() => sortTable('birthdate')}>
+                      Birthdate
+                      {sortColumn === 'birthdate' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th on:click={() => sortTable('sex')}>
+                      Gender
+                      {sortColumn === 'sex' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th on:click={() => sortTable('blood_type')}>
+                      Blood Type
+                      {sortColumn === 'blood_type' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th on:click={() => sortTable('civil_status')}>
+                      Civil Status
+                      {sortColumn === 'civil_status' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th>
+                      Contact Number
+                    </th>
+                    <th on:click={() => sortTable('email')}>
+                      Email
+                      {sortColumn === 'email' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th on:click={() => sortTable('donation_date')}>
+                      Donation Date
+                      {sortColumn === 'donation_date' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                    <th on:click={() => sortTable('donation_event')}>
+                      Location
+                      {sortColumn === 'donation_event' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each data as item (item.id)}
+                  <tr>
+                    <td>{item.first_name} {item.last_name}</td>
+                    <td>{item.birthdate}</td>
+                    <td>{item.sex}</td>
+                    <td>{item.blood_type}</td>
+                    <td>{item.civil_status}</td>
+                    <td>{item.contact_num}</td>
+                    <td>{item.email}</td>
+                    <td>{Moment(item.donation_date).format("L")}</td>
+                    <td>{item.donation_event}</td>
+                  </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
