@@ -260,50 +260,50 @@
       crossorigin="anonymous"
     ></script>
 
-    <style>
-      Body {
-        overflow-x: hidden;
-      }
+<style>
+  Body {
+    overflow-x: hidden;
+    }
 
-      #socmed:hover{
-        transform:scale(1.5);
-      }
+  #socmed:hover{
+    transform:scale(1.5);
+    }
 
-      main {
-        animation: fadeIn 0.5s;
-      }
+  main {
+    animation: fadeIn 0.5s;
+    }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          filter: blur(5px);
-          transform: translateX(-5px);
-        }
-        to {
-          opacity: 1;
-          filter: blur(0);
-          transform: translateX(0);
-        }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        filter: blur(5px);
+        transform: translateX(-5px);
       }
-
-      .nav-hover {
-        display: inline-block;
-        padding-bottom: 2px;
-        background-image: linear-gradient(#ffffff 0 0);
-        background-position: 0 100%; /*OR bottom left*/
-        background-size: 0% 2px;
-        background-repeat: no-repeat;
-        transition:
-          background-size 0.3s,
-          background-position 0s 0.3s; /*change after the size immediately*/
+      to {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateX(0);
       }
+    }
 
-      .nav-hover:hover {
-        background-position: 100% 100%; /*OR bottom right*/
-        background-size: 100% 2px;
-      }
+  .nav-hover {
+    display: inline-block;
+    padding-bottom: 2px;
+    background-image: linear-gradient(#ffffff 0 0);
+    background-position: 0 100%; /*OR bottom left*/
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    transition:
+      background-size 0.3s,
+      background-position 0s 0.3s; /*change after the size immediately*/
+    }
 
-      .splide-container {
+  .nav-hover:hover {
+      background-position: 100% 100%; /*OR bottom right*/
+      background-size: 100% 2px;
+    }
+
+  .splide-container {
     top: 20px; /* Set a fixed height for the slider */
   }
 
@@ -401,9 +401,9 @@
     animation-timing-function: ease-out;
   }
   }
-    </style>
-  </head>
-
+</style>
+  
+</head>
   <body class="bg-light">
     <header class="vw-100">
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger w-100">
@@ -586,25 +586,6 @@
                       Donor Name
                       {sortColumn === 'last_name' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
                     </th>
-                    <th on:click={() => sortTable('birthdate')}>
-                      Birthdate
-                      {sortColumn === 'birthdate' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
-                    </th>
-                    <th on:click={() => sortTable('sex')}>
-                      Gender
-                      {sortColumn === 'sex' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
-                    </th>
-                    <th on:click={() => sortTable('blood_type')}>
-                      Blood Type
-                      {sortColumn === 'blood_type' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
-                    </th>
-                    <th on:click={() => sortTable('civil_status')}>
-                      Civil Status
-                      {sortColumn === 'civil_status' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
-                    </th>
-                    <th>
-                      Contact Number
-                    </th>
                     <th on:click={() => sortTable('email')}>
                       Email
                       {sortColumn === 'email' ? (sortDirection === 1 ? ' ▲' : ' ▼') : ''}
@@ -623,11 +604,6 @@
                   {#each data as item (item.id)}
                   <tr>
                     <td>{item.first_name} {item.last_name}</td>
-                    <td>{item.birthdate}</td>
-                    <td>{item.sex}</td>
-                    <td>{item.blood_type}</td>
-                    <td>{item.civil_status}</td>
-                    <td>{item.contact_num}</td>
                     <td>{item.email}</td>
                     <td>{Moment(item.donation_date).format("L")}</td>
                     <td>{item.donation_event}</td>
