@@ -54,15 +54,14 @@
   };
 
   // New appointment section variables
-  const formattedToday = today.toISOString().split("T")[0]; // Format today's date as YYYY-MM-DD
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Calculate last day of the current month
-  const lastDayOfMonthDate = lastDayOfMonth.getDate(); // Get the day component of the last day
-  const formattedLastDayOfMonth =
-    today.getFullYear() +
-    "-" +
-    (today.getMonth() + 1) +
-    "-" +
-    lastDayOfMonthDate; // Format last day of the month as YYYY-MM-DD
+  let formattedToday = today.toISOString().split("T")[0];
+  let formattedLastDayOfMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    0
+  )
+    .toISOString()
+    .split("T")[0];
 
   let selectedDate = formattedToday; // Set initial value to today
   let selectedTime = ""; // Selected appointment time
@@ -98,44 +97,16 @@
 
   const validateAndProceed = () => {
     // Check if site, date, time, first name, and last name are selected
-    if (!selectedHospital) {
-      missingInfo.site = true;
-    } else {
-      missingInfo.site = false;
-    }
-
-    if (!selectedDate) {
-      missingInfo.date = true;
-    } else {
-      missingInfo.date = false;
-    }
-
-    if (!selectedTime) {
-      missingInfo.time = true;
-    } else {
-      missingInfo.time = false;
-    }
-
-    if (!firstName) {
-      missingInfo.firstName = true;
-    } else {
-      missingInfo.firstName = false;
-    }
-
-    if (!lastName) {
-      missingInfo.lastName = true;
-    } else {
-      missingInfo.lastName = false;
-    }
+    missingInfo = {
+      site: !selectedHospital,
+      date: !selectedDate,
+      time: !selectedTime,
+      firstName: !firstName,
+      lastName: !lastName,
+    };
 
     // Check if any field is missing
-    if (
-      missingInfo.site ||
-      missingInfo.date ||
-      missingInfo.time ||
-      missingInfo.firstName ||
-      missingInfo.lastName
-    ) {
+    if (Object.values(missingInfo).some((field) => field)) {
       // Missing information, do not proceed
     } else {
       // Proceed with scheduling logic or show confirmation
@@ -154,14 +125,30 @@
       !email ||
       !mobile
     ) {
-      missingInfo = true;
+      // Reset the missingInfo flags
+      missingInfo = {
+        site: !selectedHospital,
+        date: !selectedDate,
+        time: !selectedTime,
+        firstName: !firstName,
+        lastName: !lastName,
+      };
     } else {
-      // Reset the missingInfo flag
-      missingInfo = false;
+      // Reset the missingInfo flags
+      missingInfo = {
+        site: false,
+        date: false,
+        time: false,
+        firstName: false,
+        lastName: false,
+      };
       // Show the appointment details
       showAppointmentSummary();
     }
   };
+
+  // New variable for appointment summary
+  let appointmentSummary = "";
 
   // Function to show appointment summary
   const showAppointmentSummary = () => {
@@ -171,15 +158,15 @@
       Date: ${selectedDate}
       Time: ${selectedTime}
       Hospital: ${selectedHospital}
-    `;
+  `;
 
-    // Display the summary in a div
+    // Store the summary in the variable
     appointmentSummary = summaryMessage;
   };
 
   // Confirmation and scheduling functions
   const showConfirmation = () => {
-    if (confirm("Are you sure you want to schedule the appointment?")) {
+    if (window.confirm("Are you sure you want to schedule the appointment?")) {
       // Implement scheduling logic here
       scheduleAppointment();
     }
@@ -310,33 +297,22 @@
     <!-- Card body for user information -->
     <div class="card">
       <div class="user-info-section">
-        <!-- column 1 -->
-        <div class="user-info-column">
-          <form>
-            <label for="firstName">First Name:</label>
-            <input
-              type="text"
-              id="firstName"
-              bind:value={firstName}
-              class:missing={missingInfo && !firstName}
-            />
-          </form>
-        </div>
-
-        <!-- column 2 -->
-        <div class="user-info-column">
-          <form>
-            <label for="lastName">Last Name:</label>
-            <input
-              type="text"
-              id="lastName"
-              bind:value={lastName}
-              class:missing={missingInfo && !lastName}
-            />
-          </form>
-        </div>
+        {#each ['First Name', 'Last Name'] as field}
+          <div class="user-info-column">
+            <form>
+              <label for={field.toLowerCase()}>{field}:</label>
+              <input
+                type="text"
+                id={field.toLowerCase()}
+                bind:value={$$props[field.toLowerCase()]}
+                class:missing={missingInfo && !$$props[field.toLowerCase()]}
+                placeholder={`Enter ${field === 'First Name' ? 'first' : 'last'} name`}
+              />
+            </form>
+          </div>
+        {/each}
       </div>
-      <br />
+      
 
       <form>
         <label for="email">Email:</label>
@@ -375,7 +351,6 @@
     display: flex;
     flex-direction: column;
   }
-
   main {
     max-width: 800px;
     margin: 0 auto;
@@ -398,10 +373,7 @@
     margin: 20px 0;
   }
 
-  label {
-    font-weight: bold;
-  }
-
+  label,
   select,
   input[type="date"],
   input[type="text"],
@@ -413,20 +385,6 @@
     box-sizing: border-box;
   }
 
-  .date-time-section {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .time-section,
-  .date-section {
-    width: 48%; /* Adjust as needed */
-  }
-
-  .time-section {
-    margin-left: 4%; /* Adjust as needed */
-  }
-
   .card {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -435,15 +393,20 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .user-info-section {
+  .user-info-section,
+  .date-time-section {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
   }
 
+  .time-section,
+  .date-section,
   .user-info-column {
     width: 48%; /* Adjust as needed */
+  }
+
+  .time-section {
+    margin-left: 4%; /* Adjust as needed */
   }
 
   .button-section {
@@ -468,6 +431,7 @@
 
   p {
     margin: 10px 0;
+    color: red;
   }
 
   .missing {
