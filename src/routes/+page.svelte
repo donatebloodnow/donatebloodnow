@@ -271,10 +271,18 @@
     <!--Google Maps API-->
     <!--Google Maps API-->
     <!--Google Maps API-->
+    <!--Google Maps API-->
+    <!--Google Maps API-->
+    <!--Google Maps API-->
+    <!--Google Maps API-->
     <script
       src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/markerwithlabel/src/markerwithlabel.js"
     ></script>
 
+    <!-- API KEY -->
+    <!-- API KEY -->
+    <!-- API KEY -->
+    <!-- API KEY -->
     <!-- API KEY -->
     <!-- API KEY -->
     <!-- API KEY -->
@@ -388,9 +396,16 @@
         padding: 20px;
       }
 
-      #bloodbank-list, #map-container {
+      #bloodbank-list,
+      #map-container {
         max-height: 600px;
-        overflow-y: auto; 
+        overflow-y: auto;
+      }
+
+      .appointment-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       /*Animations*/
@@ -524,9 +539,10 @@
               <li class="nav-item">
                 <a
                   class="nav-link nav-hover text-light"
-                  href="./appointment_main"
+                  href="#appointment-form"
+                  on:click={(e) => smoothScroll("#appointment-form", e)}
                 >
-                  Appointment Scheduler
+                  Set an Appointment
                 </a>
               </li>
             </ul>
@@ -654,6 +670,20 @@
           </div>
         </div>
         <!-- /END THE BLOOD BANK LOCATOR -->
+      </div>
+
+      <!-- Appointment form -->
+      <div class="appointment-form" id="appointment-form">
+        <!-- Embedded Google Forms iframe -->
+        <iframe
+          title="Set an Appointment"
+          src="https://docs.google.com/forms/d/e/1FAIpQLSdhclb52kc0hBj8Vy_E3Poca9Gm0oKl3rK1gOsYEGqz1PBq8A/viewform?embedded=true"
+          width="800"
+          height="500"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0">Loading…</iframe
+        >
       </div>
 
       <!--Donor History-->
