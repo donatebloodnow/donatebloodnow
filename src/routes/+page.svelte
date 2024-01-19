@@ -253,7 +253,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Hugo 0.72.0" />
-    <title>B.B.M.S</title>
+    <title>BDMS Public</title>
 
     <link rel="stylesheet" href="/src/lib/style.css" />
     <link
@@ -269,22 +269,10 @@
     />
 
     <!--Google Maps API-->
-    <!--Google Maps API-->
-    <!--Google Maps API-->
-    <!--Google Maps API-->
-    <!--Google Maps API-->
-    <!--Google Maps API-->
-    <!--Google Maps API-->
     <script
       src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/markerwithlabel/src/markerwithlabel.js"
     ></script>
 
-    <!-- API KEY -->
-    <!-- API KEY -->
-    <!-- API KEY -->
-    <!-- API KEY -->
-    <!-- API KEY -->
-    <!-- API KEY -->
     <!-- API KEY -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9hnYtw84Sg78NaJjVw8qv0gkA2-IriC8&callback=initMap"
@@ -522,17 +510,12 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link nav-hover text-light" href="./newsletter">
-                  Newsletter
-                </a>
-              </li>
-              <li class="nav-item">
                 <a
                   class="nav-link nav-hover text-light"
                   href="#bank-locator"
                   on:click={(e) => smoothScroll("#bank-locator", e)}
                 >
-                  Blood Bank Locator
+                  Blood Bank Locations
                 </a>
               </li>
               <!-- Add a new page link for the appointment scheduler -->
