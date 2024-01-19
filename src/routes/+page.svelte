@@ -51,40 +51,6 @@
     // You can add logic here to determine when to show the appointment scheduler
   });
 
-  const toggleAppointmentScheduler = () => {
-    showAppointmentScheduler = !showAppointmentScheduler;
-  };
-
-  // New appointment section variables
-  let selectedHospital = ""; // Selected hospital from the dropdown
-  let hospitalList = [
-    "Sample Hospital 1",
-    "Sample Hospital 2",
-    "Sample Hospital 3",
-  ]; // Sample hospital list
-  let hospitalAddresses = [
-    "123 Main St, Cityville, Country",
-    "456 Oak Ave, Townsville, Country",
-    "789 Pine Blvd, Villagetown, Country",
-  ]; // Sample hospital addresses
-  let hospitalContacts = ["123-456-7890", "234-567-8901", "345-678-9012"]; // Sample hospital contact numbers
-
-  const handleHospitalChange = (event) => {
-    selectedHospital = event.target.value;
-  };
-
-  const displayHospitalInfo = () => {
-    const selectedIndex = hospitalList.indexOf(selectedHospital);
-    if (selectedIndex !== -1) {
-      const hospitalAddress = hospitalAddresses[selectedIndex];
-      const hospitalContact = hospitalContacts[selectedIndex];
-      // Display the information in the read-only text boxes
-      // You can use these values wherever needed in your UI
-      console.log("Hospital Address:", hospitalAddress);
-      console.log("Hospital Contact:", hospitalContact);
-    }
-  };
-
   //Sort Filter
   let sortColumn = "";
   let sortDirection = 1; // 1 for ascending, -1 for descending
